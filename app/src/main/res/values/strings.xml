@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">WifiTracker</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+
+    <string name="btn_scan">Scan now</string>
+    <string name="btn_scan_stop">Stop scan</string>
+
+    <string name="txt_scanning">status: scanning&#8230;</string>
+    <string name="txt_not_scanning">status: not scanning</string>
+    <string name="txt_scanning_stopped">status: scanning stopped</string>
+    <string name="txt_scanning_done">status: done</string>
+
+    <string name="total_wifi_found">total found:</string>
+</resources>
