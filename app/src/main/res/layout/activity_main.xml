@@ -44,10 +44,25 @@
                 android:paddingLeft="32dp"
                 android:paddingRight="32dp"
                 android:background="@color/colorPrimary"
-                android:textColor="@color/colorWhite"
+                android:textColor="@color/white"
                 android:layout_marginTop="@dimen/element_distance_far"
                 android:layout_marginBottom="@dimen/element_distance_far"
                 android:text="@string/btn_scan"/>
+
+            <Button
+                android:id="@+id/btnForceStop"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
+                android:paddingLeft="32dp"
+                android:paddingRight="32dp"
+                android:background="@color/colorPrimary"
+                android:textColor="@color/white"
+                android:layout_marginLeft="@dimen/element_distance_medium"
+                android:layout_marginTop="@dimen/element_distance_far"
+                android:layout_marginBottom="@dimen/element_distance_far"
+                android:text="@string/btn_scan_force_stop"/>
 
         </LinearLayout>
 
@@ -63,7 +78,7 @@
             android:id="@+id/rvWifi"
             android:layout_width="match_parent"
             android:layout_height="300dp"
-            android:background="@color/colorBlack"/>
+            android:background="@color/black"/>
 
         <LinearLayout
             android:id="@+id/llScanInfos"
@@ -90,8 +105,8 @@
         android:layout_marginEnd="0dp"
         android:layout_marginStart="0dp"
         android:background="@color/colorPrimary"
-        app:itemTextColor="@color/colorWhite"
-        app:itemIconTint="@color/colorWhite"
+        app:itemTextColor="@color/white"
+        app:itemIconTint="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"

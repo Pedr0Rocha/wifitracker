@@ -8,6 +8,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiManager;
 import android.os.Build;
@@ -36,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView tabWelcomeMsg;
 
     private Button btnScan;
+    private Button btnForceStop;
     private TextView txtScanStatus;
     private LinearLayout llScanInfos;
     private TextView txtTotalFound;
@@ -48,6 +50,8 @@ public class MainActivity extends AppCompatActivity {
     private List<Wifi> wifiList;
 
     private RecyclerView rvWifi;
+
+    private AdapterListWifi adapterWifi;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -84,6 +88,7 @@ public class MainActivity extends AppCompatActivity {
         tabWelcomeMsg = findViewById(R.id.tabWelcomeMsg);
 
         btnScan = findViewById(R.id.btnScan);
+        btnForceStop = findViewById(R.id.btnForceStop);
         txtScanStatus = findViewById(R.id.txtScanStatus);
         txtTotalFound = findViewById(R.id.txtTotalFound);
 
@@ -96,8 +101,10 @@ public class MainActivity extends AppCompatActivity {
 
     private void setupLayout() {
         txtScanStatus.setText(R.string.txt_not_scanning);
-        llScanInfos.setVisibility(View.GONE);
         tabWelcomeMsg.setText("pew pew pew!");
+
+        llScanInfos.setVisibility(View.GONE);
+        txtTotalFound.setText(getResources().getString(R.string.total_wifi_found, 0));
     }
 
     private void setupActions() {
@@ -108,6 +115,13 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 if (isScanning) stopScanning();
                 else scan();
+            }
+        });
+
+        btnForceStop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                stopScanning();
             }
         });
     }
@@ -175,9 +189,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void manageResults() {
-        int lastIterationSize = wifiList.size();
-        boolean newEntries = false;
-
         for (ScanResult result : resultList) {
             boolean isNew = true;
 
@@ -198,13 +209,16 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
-        newEntries = lastIterationSize < wifiList.size(); // TODO - use this and dont create new adapter everytime
-
         if (!wifiList.isEmpty()) {
-            txtTotalFound.setText("total found: " + wifiList.size());
-            AdapterListWifi adapter = new AdapterListWifi(wifiList);
-            rvWifi.setAdapter(adapter);
-            rvWifi.setLayoutManager(new LinearLayoutManager(this));
+            txtTotalFound.setText(getResources().getString(R.string.total_wifi_found, wifiList.size()));
+
+            if (adapterWifi != null) {
+                adapterWifi.notifyDataSetChanged();
+            } else {
+                adapterWifi = new AdapterListWifi(wifiList);
+                rvWifi.setAdapter(adapterWifi);
+                rvWifi.setLayoutManager(new LinearLayoutManager(this));
+            }
         }
 
     }

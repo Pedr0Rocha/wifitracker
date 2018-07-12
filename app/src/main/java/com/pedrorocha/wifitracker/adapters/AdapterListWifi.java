@@ -38,15 +38,15 @@ public class AdapterListWifi extends RecyclerView.Adapter<AdapterListWifi.Custom
         holder.txtSsid.setText(wifi.getSsid());
         holder.txtBssid.setText(wifi.getBssid());
         holder.txtCapabilities.setText(wifi.getCapabilities());
+        holder.txtSecurityLevel.setText("Security level: " + wifi.getSecurityLevel());
         holder.txtTimestamp.setText(wifi.getParsedTimestamp());
 
-        int capabilityColor = wifi.isWEP() ? R.color.colorRed : R.color.colorAccent;
-        holder.txtCapabilities.setTextColor(context.getResources().getColor(capabilityColor));
+        holder.txtSecurityLevel.setTextColor(context.getResources().getColor(wifi.getColor()));
     }
 
     @Override
     public int getItemCount() {
-        return (null != itens ? itens.size() : 0);
+        return (itens != null ? itens.size() : 0);
     }
 
     @Override
@@ -58,6 +58,7 @@ public class AdapterListWifi extends RecyclerView.Adapter<AdapterListWifi.Custom
         protected TextView txtSsid;
         protected TextView txtBssid;
         protected TextView txtCapabilities;
+        protected TextView txtSecurityLevel;
         protected TextView txtTimestamp;
 
 
@@ -66,6 +67,7 @@ public class AdapterListWifi extends RecyclerView.Adapter<AdapterListWifi.Custom
             this.txtSsid = view.findViewById(R.id.txtSsid);
             this.txtBssid = view.findViewById(R.id.txtBssid);
             this.txtCapabilities = view.findViewById(R.id.txtCapabilities);
+            this.txtSecurityLevel = view.findViewById(R.id.txtSecurityLevel);
             this.txtTimestamp = view.findViewById(R.id.txtTimestamp);
         }
     }

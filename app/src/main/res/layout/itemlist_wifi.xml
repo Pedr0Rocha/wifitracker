@@ -39,6 +39,14 @@
         android:text="capabilities"/>
 
     <TextView
+        android:id="@+id/txtSecurityLevel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/colorAccent"
+        android:textSize="12sp"
+        android:text="security level"/>
+
+    <TextView
         android:id="@+id/txtTimestamp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

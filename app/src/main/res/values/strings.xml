@@ -6,11 +6,12 @@
 
     <string name="btn_scan">Scan now</string>
     <string name="btn_scan_stop">Stop scan</string>
+    <string name="btn_scan_force_stop">Force stop</string>
 
     <string name="txt_scanning">status: scanning&#8230;</string>
     <string name="txt_not_scanning">status: not scanning</string>
     <string name="txt_scanning_stopped">status: scanning stopped</string>
     <string name="txt_scanning_done">status: done</string>
 
-    <string name="total_wifi_found">total found:</string>
+    <string name="total_wifi_found" formatted="false">total found: %1$d</string>
 </resources>
