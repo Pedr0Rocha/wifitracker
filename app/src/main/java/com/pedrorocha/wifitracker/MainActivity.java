@@ -27,9 +27,13 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.pedrorocha.wifitracker.adapters.AdapterListWifi;
+import com.pedrorocha.wifitracker.models.Scan;
 import com.pedrorocha.wifitracker.models.Wifi;
 
 import java.util.ArrayList;
@@ -58,6 +62,8 @@ public class MainActivity extends AppCompatActivity {
     private AdapterListWifi adapterWifi;
 
     DatabaseReference mDatabase;
+    DatabaseReference scansReference;
+    DatabaseReference wifiReference;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -93,6 +99,36 @@ public class MainActivity extends AppCompatActivity {
 
     private void initDatabase() {
         mDatabase = FirebaseDatabase.getInstance().getReference();
+
+        scansReference = FirebaseDatabase.getInstance().getReference("data").child("scans");
+        wifiReference = FirebaseDatabase.getInstance().getReference("data").child("wifi");
+
+        scansReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                long total = dataSnapshot.getChildrenCount();
+                mDatabase.child("stats").child("scanCount").setValue(total);
+                mDatabase.child("stats").child("lastScan").setValue(Utils.getParsedTimestamp(System.currentTimeMillis()));
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+        wifiReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                long total = dataSnapshot.getChildrenCount();
+                mDatabase.child("stats").child("wifiCount").setValue(total);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 
     private void bindAll() {
@@ -196,13 +232,17 @@ public class MainActivity extends AppCompatActivity {
         txtScanStatus.setText(R.string.txt_scanning_done);
         btnScan.setText(R.string.btn_scan);
 
-        manageResults();
+        Scan scan = new Scan(
+                UUID.randomUUID().toString(),
+                System.currentTimeMillis(),
+                resultList.size()
+        );
+        mDatabase.child("data").child("scans").child(scan.getId()).setValue(scan);
+
+        manageResults(scan);
     }
 
-    private void manageResults() {
-        String scanId = UUID.randomUUID().toString();
-        mDatabase.child("scans").child(scanId)
-                .setValue(Utils.getParsedTimestamp(System.currentTimeMillis()));
+    private void manageResults(Scan scan) {
 
         for (ScanResult result : resultList) {
             boolean isNew = true;
@@ -216,14 +256,14 @@ public class MainActivity extends AppCompatActivity {
 
             if (isNew) {
                 Wifi wifi = new Wifi(
-                        scanId,
+                        scan.getId(),
                         result.SSID,
                         result.BSSID,
                         result.capabilities,
                         System.currentTimeMillis()
                 );
                 wifiList.add(wifi);
-                mDatabase.child("wifi").child(result.BSSID).setValue(wifi);
+                mDatabase.child("data").child("wifi").child(result.BSSID).setValue(wifi);
             }
         }
 

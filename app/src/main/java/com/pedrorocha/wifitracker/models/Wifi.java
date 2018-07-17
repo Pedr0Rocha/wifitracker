@@ -1,13 +1,9 @@
 package com.pedrorocha.wifitracker.models;
 
-import android.annotation.SuppressLint;
-
 import com.google.firebase.database.Exclude;
+import com.google.firebase.database.PropertyName;
 import com.pedrorocha.wifitracker.R;
-
-import java.sql.Date;
-import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
+import com.pedrorocha.wifitracker.Utils;
 
 public class Wifi {
 
@@ -16,6 +12,8 @@ public class Wifi {
     private String bssid;
     private String capabilities;
     private long timestamp;
+    private String parsedTimestamp;
+    private boolean isOpen;
     private String mode;
     private int channel;
     private int rate;
@@ -35,6 +33,8 @@ public class Wifi {
         this.bssid = bssid;
         this.capabilities = capabilities;
         this.timestamp = timestamp;
+        this.parsedTimestamp = Utils.getParsedTimestamp(timestamp);
+        this.isOpen = hasNoPassword();
 
         setupSecurityAttributes();
     }
@@ -60,11 +60,7 @@ public class Wifi {
     }
 
     public String getParsedTimestamp() {
-        Timestamp stamp = new Timestamp(timestamp);
-        Date date = new Date(stamp.getTime());
-
-        @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy h:mm:ss a");
-        return sdf.format(date);
+        return this.parsedTimestamp;
     }
 
     @Exclude
@@ -79,11 +75,15 @@ public class Wifi {
                 !capabilities.toLowerCase().contains("psk"));
     }
 
+    public boolean isOpen() {
+        return isOpen;
+    }
+
     private void setupSecurityAttributes() {
         if (isWEP()) {
             this.color = R.color.yellow;
             this.securityLevel = "Weak";
-        } else if (hasNoPassword()) {
+        } else if (isOpen) {
             this.color = R.color.red;
             this.securityLevel = "None";
         } else {
