@@ -2,6 +2,7 @@ package com.pedrorocha.wifitracker.models;
 
 import android.annotation.SuppressLint;
 
+import com.google.firebase.database.Exclude;
 import com.pedrorocha.wifitracker.R;
 
 import java.sql.Date;
@@ -10,6 +11,7 @@ import java.text.SimpleDateFormat;
 
 public class Wifi {
 
+    private String scanId;
     private String ssid;
     private String bssid;
     private String capabilities;
@@ -27,7 +29,8 @@ public class Wifi {
 
     }
 
-    public Wifi(String ssid, String bssid, String capabilities, long timestamp) {
+    public Wifi(String scanId, String ssid, String bssid, String capabilities, long timestamp) {
+        this.scanId = scanId;
         this.ssid = ssid;
         this.bssid = bssid;
         this.capabilities = capabilities;
@@ -64,6 +67,7 @@ public class Wifi {
         return sdf.format(date);
     }
 
+    @Exclude
     public boolean isWEP() {
         return capabilities.toLowerCase().contains("wep");
     }
@@ -88,11 +92,16 @@ public class Wifi {
         }
     }
 
+    @Exclude
     public int getColor() {
         return color;
     }
 
     public String getSecurityLevel() {
         return securityLevel;
+    }
+
+    public String getScanId() {
+        return scanId;
     }
 }

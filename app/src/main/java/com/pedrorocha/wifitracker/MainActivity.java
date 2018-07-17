@@ -19,6 +19,7 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Pair;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -33,6 +34,7 @@ import com.pedrorocha.wifitracker.models.Wifi;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -55,9 +57,7 @@ public class MainActivity extends AppCompatActivity {
 
     private AdapterListWifi adapterWifi;
 
-    FirebaseDatabase database;
-    DatabaseReference dbReference;
-    DatabaseReference wifiDbReference;
+    DatabaseReference mDatabase;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -92,9 +92,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initDatabase() {
-        database = FirebaseDatabase.getInstance();
-        dbReference = database.getReference("scans");
-        wifiDbReference = database.getReference("wifi");
+        mDatabase = FirebaseDatabase.getInstance().getReference();
     }
 
     private void bindAll() {
@@ -159,7 +157,6 @@ public class MainActivity extends AppCompatActivity {
         if (wifiManager.isWifiEnabled()) {
             isScanning = true;
 
-            dbReference.setValue(System.currentTimeMillis());
             registerReceiver(wifiReceiver, new IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION));
             wifiManager.startScan();
             Toast.makeText(this, R.string.txt_scanning, Toast.LENGTH_SHORT).show();
@@ -203,6 +200,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void manageResults() {
+        String scanId = UUID.randomUUID().toString();
+        mDatabase.child("scans").child(scanId)
+                .setValue(Utils.getParsedTimestamp(System.currentTimeMillis()));
+
         for (ScanResult result : resultList) {
             boolean isNew = true;
 
@@ -215,13 +216,14 @@ public class MainActivity extends AppCompatActivity {
 
             if (isNew) {
                 Wifi wifi = new Wifi(
+                        scanId,
                         result.SSID,
                         result.BSSID,
                         result.capabilities,
                         System.currentTimeMillis()
                 );
                 wifiList.add(wifi);
-                wifiDbReference.setValue(wifi);
+                mDatabase.child("wifi").child(result.BSSID).setValue(wifi);
             }
         }
 
