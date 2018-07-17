@@ -26,6 +26,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.pedrorocha.wifitracker.adapters.AdapterListWifi;
 import com.pedrorocha.wifitracker.models.Wifi;
 
@@ -53,6 +55,10 @@ public class MainActivity extends AppCompatActivity {
 
     private AdapterListWifi adapterWifi;
 
+    FirebaseDatabase database;
+    DatabaseReference dbReference;
+    DatabaseReference wifiDbReference;
+
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
@@ -78,10 +84,17 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        initDatabase();
         bindAll();
         setupLayout();
         setupActions();
         initWifiSettings();
+    }
+
+    private void initDatabase() {
+        database = FirebaseDatabase.getInstance();
+        dbReference = database.getReference("scans");
+        wifiDbReference = database.getReference("wifi");
     }
 
     private void bindAll() {
@@ -146,6 +159,7 @@ public class MainActivity extends AppCompatActivity {
         if (wifiManager.isWifiEnabled()) {
             isScanning = true;
 
+            dbReference.setValue(System.currentTimeMillis());
             registerReceiver(wifiReceiver, new IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION));
             wifiManager.startScan();
             Toast.makeText(this, R.string.txt_scanning, Toast.LENGTH_SHORT).show();
@@ -200,12 +214,14 @@ public class MainActivity extends AppCompatActivity {
             }
 
             if (isNew) {
-                wifiList.add(new Wifi(
+                Wifi wifi = new Wifi(
                         result.SSID,
                         result.BSSID,
                         result.capabilities,
                         System.currentTimeMillis()
-                ));
+                );
+                wifiList.add(wifi);
+                wifiDbReference.setValue(wifi);
             }
         }
 

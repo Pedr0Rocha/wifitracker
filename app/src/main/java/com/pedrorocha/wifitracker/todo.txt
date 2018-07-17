@@ -5,6 +5,7 @@ better control of receiver status, button to force unregister
 separate receiver and main activity
 add a hashset checking bssid to increase performance
 add color for better visualization
+create constants class to hold data across the app
 
 
 OK - notify data change to adapter instead of reset
