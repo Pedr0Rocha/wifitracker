@@ -1,7 +1,6 @@
 package com.pedrorocha.wifitracker.models;
 
 import com.google.firebase.database.Exclude;
-import com.google.firebase.database.PropertyName;
 import com.pedrorocha.wifitracker.R;
 import com.pedrorocha.wifitracker.Utils;
 
@@ -103,5 +102,15 @@ public class Wifi {
 
     public String getScanId() {
         return scanId;
+    }
+
+    @Override
+    public String toString() {
+        return "ssid: " + ssid +
+               "\nbssid: " + bssid +
+               "\ncapabilities: " + capabilities +
+               "\ntimestamp: " + parsedTimestamp +
+               "\nsecurity level: " + securityLevel +
+               "\nopen: " + isOpen;
     }
 }

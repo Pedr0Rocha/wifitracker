@@ -1,5 +1,4 @@
-add geolocation to wifi
-add a copy/send/share data method
+add geolocation to wifi - check battery usage after this
 better control of receiver status, button to force unregister
 separate receiver and main activity
 add a hashset checking bssid to increase performance
@@ -7,7 +6,7 @@ add color for better visualization
 create constants class to hold data across the app
 load data from firebase
 
-
+OK - add a copy/send/share data method
 OK - count nof children firebase, add stats child
 OK - persist data (firebase)
 OK - notify data change to adapter instead of reset

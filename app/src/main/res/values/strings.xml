@@ -14,4 +14,6 @@
     <string name="txt_scanning_done">status: done</string>
 
     <string name="total_wifi_found" formatted="false">total found: %1$d</string>
+
+    <string name="txt_info_security_level" formatted="false">Security level: %1$s</string>
 </resources>
