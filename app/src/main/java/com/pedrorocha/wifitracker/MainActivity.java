@@ -45,7 +45,10 @@ public class MainActivity extends AppCompatActivity {
     private Button btnForceStop;
     private TextView txtScanStatus;
     private LinearLayout llScanInfos;
-    private TextView txtTotalFound;
+    private TextView txtTotalFoundSession;
+    private TextView txtWifiCount;
+    private TextView txtScanCount;
+    private TextView txtLastScan;
 
     private boolean isScanning;
 
@@ -104,8 +107,11 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 long total = dataSnapshot.getChildrenCount();
+                String lastScan = Utils.getParsedTimestamp(System.currentTimeMillis());
                 mDatabase.child("stats").child("scanCount").setValue(total);
-                mDatabase.child("stats").child("lastScan").setValue(Utils.getParsedTimestamp(System.currentTimeMillis()));
+                mDatabase.child("stats").child("lastScan").setValue(lastScan);
+                txtScanCount.setText(getResources().getString(R.string.scan_count, total));
+                txtLastScan.setText(getResources().getString(R.string.last_scan, lastScan));
             }
 
             @Override
@@ -119,6 +125,7 @@ public class MainActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 long total = dataSnapshot.getChildrenCount();
                 mDatabase.child("stats").child("wifiCount").setValue(total);
+                txtWifiCount.setText(getResources().getString(R.string.wifi_count, total));
             }
 
             @Override
@@ -134,7 +141,10 @@ public class MainActivity extends AppCompatActivity {
         btnScan = findViewById(R.id.btnScan);
         btnForceStop = findViewById(R.id.btnForceStop);
         txtScanStatus = findViewById(R.id.txtScanStatus);
-        txtTotalFound = findViewById(R.id.txtTotalFound);
+        txtTotalFoundSession = findViewById(R.id.txtTotalFoundSession);
+        txtWifiCount = findViewById(R.id.txtWifiCount);
+        txtScanCount = findViewById(R.id.txtScanCount);
+        txtLastScan = findViewById(R.id.txtLastScan);
 
         rvWifi = findViewById(R.id.rvWifi);
         llScanInfos = findViewById(R.id.llScanInfos);
@@ -145,10 +155,10 @@ public class MainActivity extends AppCompatActivity {
 
     private void setupLayout() {
         txtScanStatus.setText(R.string.txt_not_scanning);
-        tabWelcomeMsg.setText("pew pew pew!");
+        tabWelcomeMsg.setText(getResources().getString(R.string.app_name));
 
         llScanInfos.setVisibility(View.GONE);
-        txtTotalFound.setText(getResources().getString(R.string.total_wifi_found, 0));
+        txtTotalFoundSession.setText(getResources().getString(R.string.total_wifi_found_session, 0));
     }
 
     private void setupActions() {
@@ -265,7 +275,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         if (!wifiList.isEmpty()) {
-            txtTotalFound.setText(getResources().getString(R.string.total_wifi_found, wifiList.size()));
+            txtTotalFoundSession.setText(getResources().getString(R.string.total_wifi_found_session, wifiList.size()));
 
             if (adapterWifi != null) {
                 adapterWifi.notifyDataSetChanged();

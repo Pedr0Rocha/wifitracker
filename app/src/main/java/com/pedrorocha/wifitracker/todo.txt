@@ -4,7 +4,8 @@ separate receiver and main activity
 add a hashset checking bssid to increase performance
 add color for better visualization
 create constants class to hold data across the app
-load data from firebase
+
+WIP - load data from firebase, missing getting specific data
 
 OK - add a copy/send/share data method
 OK - count nof children firebase, add stats child

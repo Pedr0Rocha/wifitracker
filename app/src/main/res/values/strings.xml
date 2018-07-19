@@ -13,7 +13,11 @@
     <string name="txt_scanning_stopped">status: scanning stopped</string>
     <string name="txt_scanning_done">status: done</string>
 
-    <string name="total_wifi_found" formatted="false">total found: %1$d</string>
+    <string name="total_wifi_found_session" formatted="false">wifi count (session): %1$d</string>
+    <string name="wifi_count" formatted="false">wifi count: %1$d</string>
+    <string name="scan_count" formatted="false">scan count: %1$d</string>
+    <string name="last_scan" formatted="false">last scan: %1$s</string>
+    <string name="txt_stats">stats:</string>
 
     <string name="txt_info_security_level" formatted="false">Security level: %1$s</string>
 </resources>

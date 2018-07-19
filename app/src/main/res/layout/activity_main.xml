@@ -98,10 +98,37 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/txtTotalFound"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/total_wifi_found"
+                android:text="@string/txt_stats"
+                android:textColor="@color/colorAccent"/>
+
+            <TextView
+                android:id="@+id/txtTotalFoundSession"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/total_wifi_found_session"
+                android:textColor="@color/colorAccent"/>
+
+            <TextView
+                android:id="@+id/txtWifiCount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/wifi_count"
+                android:textColor="@color/colorAccent"/>
+
+            <TextView
+                android:id="@+id/txtScanCount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/scan_count"
+                android:textColor="@color/colorAccent"/>
+
+            <TextView
+                android:id="@+id/txtLastScan"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/last_scan"
                 android:textColor="@color/colorAccent"/>
 
         </LinearLayout>
