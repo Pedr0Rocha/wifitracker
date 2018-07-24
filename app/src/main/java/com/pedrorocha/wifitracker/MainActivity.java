@@ -126,6 +126,7 @@ public class MainActivity extends AppCompatActivity {
                 long total = dataSnapshot.getChildrenCount();
                 mDatabase.child("stats").child("wifiCount").setValue(total);
                 txtWifiCount.setText(getResources().getString(R.string.wifi_count, total));
+                txtWifiCount.setTextColor(getResources().getColor(R.color.colorAccent));
             }
 
             @Override
@@ -159,6 +160,10 @@ public class MainActivity extends AppCompatActivity {
 
         llScanInfos.setVisibility(View.GONE);
         txtTotalFoundSession.setText(getResources().getString(R.string.total_wifi_found_session, 0));
+        txtWifiCount.setText(getResources().getString(R.string.stats_sync));
+        txtWifiCount.setTextColor(getResources().getColor(R.color.yellow));
+        txtScanCount.setText("");
+        txtLastScan.setText("");
     }
 
     private void setupActions() {

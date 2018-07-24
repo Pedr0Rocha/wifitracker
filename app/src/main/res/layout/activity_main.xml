@@ -98,12 +98,6 @@
             android:orientation="vertical">
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/txt_stats"
-                android:textColor="@color/colorAccent"/>
-
-            <TextView
                 android:id="@+id/txtTotalFoundSession"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
