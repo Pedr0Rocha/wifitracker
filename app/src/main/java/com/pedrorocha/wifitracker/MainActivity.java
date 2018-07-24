@@ -34,6 +34,7 @@ import com.pedrorocha.wifitracker.models.Scan;
 import com.pedrorocha.wifitracker.models.Wifi;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.UUID;
 
@@ -56,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
     private WifiManager wifiManager;
     private List<ScanResult> resultList;
     private List<Wifi> wifiList;
+    private HashSet<String> wifiIds;
 
     private RecyclerView rvWifi;
 
@@ -187,6 +189,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void initWifiSettings() {
         wifiList = new ArrayList<>();
+        wifiIds = new HashSet<>();
         wifiReceiver = new WifiReceiver();
         wifiManager = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
     }
@@ -257,16 +260,9 @@ public class MainActivity extends AppCompatActivity {
     private void manageResults(Scan scan) {
 
         for (ScanResult result : resultList) {
-            boolean isNew = true;
+            if (!wifiIds.contains(result.BSSID)) {
+                wifiIds.add(result.BSSID);
 
-            for (Wifi wifi : wifiList) {
-                if (wifi.getBssid().equals(result.BSSID)) {
-                    isNew = false;
-                    break;
-                }
-            }
-
-            if (isNew) {
                 Wifi wifi = new Wifi(
                         scan.getId(),
                         result.SSID,

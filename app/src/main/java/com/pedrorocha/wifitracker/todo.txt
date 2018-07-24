@@ -1,10 +1,10 @@
 add geolocation to wifi - check battery usage after this
 separate receiver and main activity
-add a hashset checking bssid to increase performance
 create constants class to hold data across the app
 
 WIP - load data from firebase, missing getting specific data
 
+OK - add a hashset checking bssid to increase performance
 OK - add color for better visualization
 OK - better control of receiver status, button to force unregister
 OK - add a copy/send/share data method
