@@ -17,7 +17,7 @@
     <string name="wifi_count" formatted="false">wifi count: %1$d</string>
     <string name="scan_count" formatted="false">scan count: %1$d</string>
     <string name="last_scan" formatted="false">last scan: %1$s</string>
-    <string name="stats_sync">need internet connection to sync&#3230;</string>
+    <string name="stats_sync">need internet connection to sync&#8230;</string>
 
     <string name="txt_info_security_level" formatted="false">Security level: %1$s</string>
 </resources>

@@ -197,7 +197,11 @@ public class MainActivity extends AppCompatActivity {
     private void stopScanning() {
         isScanning = false;
 
-        unregisterReceiver(wifiReceiver);
+        try {
+            unregisterReceiver(wifiReceiver);
+        } catch (IllegalArgumentException ex) {
+            ex.printStackTrace();
+        }
         Toast.makeText(this, R.string.txt_scanning_stopped, Toast.LENGTH_SHORT).show();
 
         txtScanStatus.setText(R.string.txt_scanning_stopped);
